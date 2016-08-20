@@ -32,8 +32,8 @@ So, the Adblock Plus ID is `1865`.
 You can now add this to the configuration:
 ```json
 {
-    "source": "amo",
     "name": "AdBlock Plus",
+    "source": "amo",
     "amoid": 1865
 }
 ```
@@ -42,9 +42,9 @@ You can now add this to the configuration:
 If you have the direct URL for the XPI file (for example, [HTTPS Everywhere](https://www.eff.org/https-everywhere) lists the URL on their website), you can insert that URL directly into the configuration:
 ```json
 {
-    "url": "https://www.eff.org/files/https-everywhere-latest.xpi",
+    "name": "HTTPS Everywhere",
     "source": "url",
-    "name": "HTTPS Everywhere"
+    "url": "https://www.eff.org/files/https-everywhere-latest.xpi"
 }                
 ```
 
