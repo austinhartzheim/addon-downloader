@@ -2,12 +2,13 @@
 import hashlib
 import json
 import logging
+import sys
 
 import lxml.etree
 import requests
 
 AMO_ADDON_URL = 'https://services.addons.mozilla.org/en-US/firefox/api/1.5/addon/%i'
-AMO_XPATH_ALLOS_INSTALL = '/addon/install[not(@status="Beta")][@os="ALL"]'
+AMO_XPATH_INSTALL = '/addon/install[not(@status="Beta")]'
 
 session = requests.Session()
 logging.basicConfig(level=logging.DEBUG)
@@ -20,25 +21,28 @@ class DownloaderAmo():
         amo_xml = lxml.etree.fromstring(amo_response)
 
         # Extract data from XML
-        install_files = amo_xml.xpath(AMO_XPATH_ALLOS_INSTALL)
-        if len(install_files) == 0:
-            logging.error('No install could be found for this add-on.')
-            raise Exception('Could not find an install option for this add-on')
-        if len(install_files) > 1:
-            logging.warn('Multiple install options found. Choosing the first.')
-
-        install_url = install_files[0].text
-        content_hash = install_files[0].get('hash')
+        install_url, install_hash = cls._select_install_option_by_os(amo_xml)
 
         # Download add-on content
         response = session.get(install_url).content
 
         # Check hash
-        if cls._check_hash(content_hash, response):
+        if cls._check_hash(install_hash, response):
             return response
         else:
             logging.error('Hash did not match downloaded content. Aborting.')
             raise Exception('Hash of add-on content did not match listing.')
+
+    @classmethod
+    def _select_install_option_by_os(cls, amo_xml) -> (str, str):
+        install_files = amo_xml.xpath(AMO_XPATH_INSTALL)
+        os_name = cls._get_os_name()
+
+        for node in install_files:
+            if node.get('os') == 'ALL' or node.get('os') == os_name:
+                return (node.text, node.get('hash'))
+
+        raise Exception('Could not find a suitable install file')
 
     @classmethod
     def _check_hash(cls, expected_hash, content):
@@ -53,6 +57,17 @@ class DownloaderAmo():
             return (hashlib.sha256, expected_hash[len('sha256:'):])
         else:
             raise Exception('Uknown hash type provided: %s' % expected_hash)
+
+    @classmethod
+    def _get_os_name(cls) -> str:
+        if sys.platform.startswith('linux'):
+            return 'Linux'
+        elif sys.platform.startswith('win32'):
+            return 'WINNT'
+        elif sys.platform.startswith('darwin'):
+            return 'Darwin'
+        else:  # Assume it's Linux or Linux-like
+            return 'Linux'
 
 
 class DownloaderUrl():

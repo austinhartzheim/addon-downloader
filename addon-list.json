@@ -44,5 +44,10 @@
         "name": "dark.txt",
         "source": "amo",
         "amoid": 530244
+    },
+    {
+        "name": "Youtube Dark Purple",
+        "source": "amo",
+        "amoid": 619522
     }
 ]
