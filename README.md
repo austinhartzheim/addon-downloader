@@ -8,10 +8,13 @@ This is especially useful in environments where a standard set of add-ons is ins
 
 ## How?
 1. Clone the repository
-2. Modify the script to include the IDs of the add-ons you want to download (see below).
-3. Execute the script/
+2. If necessary, install dependencies: `pip3 install -r requirements.txt`
+3. Modify the addon-list.json file to include the IDs/URLs of the add-ons you want to download (see below).
+4. Execute the script: `./addon-downloader.py`
 
-### How to find an add-on's ID
+All downloaded add-ons will be placed in the current directory.
+
+### Finding an add-on's ID
 You can use the search API to search for the add-on by name.
 
 For example, modify this URL to use any search term:
@@ -27,22 +30,22 @@ The first result is likely the one you are looking for:
 So, the Adblock Plus ID is `1865`.
 
 You can now add this to the configuration:
-```python
+```json
 {
-    'name': 'AdBlock Plus',
-    'source': 'amo',
-    'amoid': 1865
+    "source": "amo",
+    "name": "AdBlock Plus",
+    "amoid": 1865
 }
 ```
 
-### Adding an add-on by URL
+### Using an add-on's URL
 If you have the direct URL for the XPI file (for example, [HTTPS Everywhere](https://www.eff.org/https-everywhere) lists the URL on their website), you can insert that URL directly into the configuration:
-```python
+```json
 {
-    'name': 'HTTPS Everywhere',
-    'source': 'url',
-    'url': 'https://www.eff.org/files/https-everywhere-latest.xpi'
-}
+    "url": "https://www.eff.org/files/https-everywhere-latest.xpi",
+    "source": "url",
+    "name": "HTTPS Everywhere"
+}                
 ```
 
 ## Contributing

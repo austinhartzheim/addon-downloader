@@ -1,0 +1,48 @@
+[
+    {
+        "name": "AdBlock Plus",
+        "source": "amo",
+        "amoid": 1865
+    },
+    {
+        "name": "HTTPS Everywhere",
+        "source": "url",
+        "url": "https://www.eff.org/files/https-everywhere-latest.xpi"
+    },
+    
+    {
+        "name": "NoScript",
+        "source": "amo",
+        "amoid": 722
+    },
+    {
+        "name": "Decentraleyes",
+        "source": "amo",
+        "amoid": 521554
+    },
+    {
+        "name": "Ghostery",
+        "source": "amo",
+        "amoid": 9609
+    },
+    {
+        "name": "Disconnect",
+        "source": "amo",
+        "amoid": 464050
+    },
+    {
+        "name": "uMatrix",
+        "source": "amo",
+        "amoid": 613250
+    },
+    {
+        "name": "Clean Links",
+        "source": "amo",
+        "amoid": 317263
+    },
+    {
+        "name": "dark.txt",
+        "source": "amo",
+        "amoid": 530244
+    }
+]

@@ -1,51 +1,10 @@
 #! /usr/bin/env python3
 import hashlib
+import json
 import logging
+
 import lxml.etree
 import requests
-
-ADDONS = [
-    {
-        'name': 'AdBlock Plus',
-        'source': 'amo',
-        'amoid': 1865
-    },
-    {
-        'name': 'NoScript',
-        'source': 'amo',
-        'amoid': 722
-    },
-    {
-        'name': 'Decentraleyes',
-        'source': 'amo',
-        'amoid': 521554
-    },
-    {
-        'name': 'Ghostery',
-        'source': 'amo',
-        'amoid': 9609
-    },
-    {
-        'name': 'Disconnect',
-        'source': 'amo',
-        'amoid': 464050
-    },
-    {
-        'name': 'uMatrix',
-        'source': 'amo',
-        'amoid': 613250
-    },
-    {
-        'name': 'Clean Links',
-        'source': 'amo',
-        'amoid': 317263
-    },
-    {
-        'name': 'HTTPS Everywhere',
-        'source': 'url',
-        'url': 'https://www.eff.org/files/https-everywhere-latest.xpi'
-    }
-]
 
 AMO_ADDON_URL = 'https://services.addons.mozilla.org/en-US/firefox/api/1.5/addon/%i'
 AMO_XPATH_ALLOS_INSTALL = '/addon/install[not(@status="Beta")][@os="ALL"]'
@@ -67,7 +26,7 @@ class DownloaderAmo():
             raise Exception('Could not find an install option for this add-on')
         if len(install_files) > 1:
             logging.warn('Multiple install options found. Choosing the first.')
-    
+
         install_url = install_files[0].text
         content_hash = install_files[0].get('hash')
 
@@ -111,7 +70,10 @@ def save_addon_file(addon_name, file_content):
 
 
 if __name__ == '__main__':
-    for addon in ADDONS:
+    with open('addon-list.json') as fp:
+        addons = json.load(fp)
+
+    for addon in addons:
 
         logging.info('Downloading %s' % addon['name'])
 
