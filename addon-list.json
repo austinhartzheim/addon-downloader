@@ -49,5 +49,10 @@
         "name": "Youtube Dark Purple",
         "source": "amo",
         "amoid": 619522
+    },
+    {
+        "name": "Privacy Badger",
+        "source": "url",
+        "url": "https://www.eff.org/files/privacy-badger-latest.xpi"
     }
 ]
